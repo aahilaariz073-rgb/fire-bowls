@@ -363,7 +363,7 @@
       <a class="btn btn-navy" href="https://www.bellafinaoutdoors.com/outdoor-living-solutions/fire-features?utm_source=fire-bowls-lp&amp;utm_medium=landing_page&amp;utm_campaign=fire_bowls&amp;utm_content=split_pool_fire_bowls" target="_blank" rel="noopener">Shop Pool Fire Bowls <span class="btn-arrow">&rarr;</span></a>
     </div>
     <div class="visual visual-video">
-      <video id="split-loop-video" aria-label="Pool fire bowls lit along a swimming pool at dusk" title="Pool fire bowls lit along a swimming pool at dusk" src="assets/split-video.mp4#t=0,10" autoplay muted loop playsinline></video>
+      <video id="split-loop-video" aria-label="A lit concrete fire bowl at the edge of a pool, then a close view of the flame" title="Outdoor fire bowls at the water's edge" src="assets/concrete-fire-bowls.mp4" autoplay muted loop playsinline preload="metadata"></video>
     </div>
   </div>
 </section>
@@ -1039,27 +1039,16 @@
     });
   })();
 
+  // Both clips are short and carry the loop attribute; this just restarts
+  // playback if the browser pauses them (tab switch, power saving).
   (function(){
-    function initLoopVideo(id){
+    ['split-loop-video', 'split-loop-video-2'].forEach(function(id){
       var v = document.getElementById(id);
       if (!v) return;
-
-      function restart(){
-        v.currentTime = 0;
-        var p = v.play();
-        if (p && p.catch) p.catch(function(){});
-      }
-
-      v.addEventListener('timeupdate', function(){
-        if (v.currentTime >= 10) { restart(); }
-      });
-      v.addEventListener('ended', restart);
       v.addEventListener('pause', function(){
-        if (!v.ended && v.currentTime < 10) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        if (!v.ended) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
       });
-    }
-
-    ['split-loop-video', 'split-loop-video-2'].forEach(initLoopVideo);
+    });
   })();
 </script>
 
