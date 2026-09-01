@@ -117,6 +117,10 @@
     background:var(--paper);color:var(--navy);font-size:1.15rem;line-height:1;cursor:pointer;display:flex;
     align-items:center;justify-content:center;}
   .modal-close:hover{background:var(--cream-2);}
+  .modal-embed-wrap{position:relative;min-height:560px;}
+  .modal-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:.88rem;color:var(--muted);background:var(--paper);border-radius:10px;}
+  .modal-embed-wrap.is-loaded .modal-loading{display:none;}
   body.modal-open{overflow:hidden;}
   @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} .hero-inner{max-width:100%;text-align:center;} .hero .cta-row{justify-content:center;} .lead-card{max-width:460px;margin:0 auto;} }
 
@@ -749,7 +753,9 @@
     <button type="button" class="modal-close" data-modal-close aria-label="Close">&times;</button>
     <h3 id="quote-modal-title">Get Your Free Fire Feature Quote</h3>
     <p class="modal-sub">Tell us about your pool or patio and our team will follow up with sizing, options and pricing.</p>
-    <iframe class="lead-embed" id="quote-modal-embed"
+    <div class="modal-embed-wrap" id="quote-embed-wrap">
+      <div class="modal-loading">Loading the form&hellip;</div>
+      <iframe class="lead-embed" id="quote-modal-embed"
       data-src="https://api.leadconnectorhq.com/widget/form/iD7GLxxCdv51i6umUCJF"
       data-layout="{'id':'INLINE'}"
       data-form-name="Funnels Form"
@@ -758,6 +764,7 @@
       data-cookie-consent="true"
       data-cookie-consent-provider="auto"
       title="Request a fire feature quote"></iframe>
+    </div>
   </div>
 </div>
 
@@ -1129,7 +1136,8 @@
         last_name:  space > -1 ? name.slice(space + 1) : '',
         phone: document.getElementById('lead-phone').value || '',
         email: document.getElementById('lead-email').value || '',
-        interest: document.getElementById('lead-interest').value || ''
+        // "Tell us about your project ?" on the LeadConnector form
+        single_line_11kyi: document.getElementById('lead-interest').value || ''
       };
       var parts = [];
       Object.keys(fields).forEach(function(k){
@@ -1172,9 +1180,45 @@
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
+    frame.addEventListener('load', function(){
+      var wrap = document.getElementById('quote-embed-wrap');
+      if (wrap) wrap.classList.add('is-loaded');
+    });
+
     Array.prototype.forEach.call(document.querySelectorAll('[data-quote-modal]'), function(el){
       el.addEventListener('click', openModal);
     });
+
+    // Show the popup on its own once per visit: after 25s, or when a desktop
+    // visitor moves to leave. Skipped if they have already opened it.
+    var AUTO_DELAY_MS = 25000;
+    var seen = false;
+    try { seen = sessionStorage.getItem('bf_quote_seen') === '1'; } catch (err) {}
+
+    function markSeen(){
+      seen = true;
+      try { sessionStorage.setItem('bf_quote_seen', '1'); } catch (err) {}
+    }
+
+    modal.addEventListener('click', markSeen);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-quote-modal]'), function(el){
+      el.addEventListener('click', markSeen);
+    });
+
+    function autoOpen(){
+      if (seen || modal.classList.contains('is-open')) return;
+      markSeen();
+      openModal();
+    }
+
+    if (!seen) {
+      setTimeout(autoOpen, AUTO_DELAY_MS);
+      if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+        document.addEventListener('mouseout', function(e){
+          if (!e.relatedTarget && e.clientY <= 0) autoOpen();
+        });
+      }
+    }
     Array.prototype.forEach.call(modal.querySelectorAll('[data-modal-close]'), function(el){
       el.addEventListener('click', closeModal);
     });
