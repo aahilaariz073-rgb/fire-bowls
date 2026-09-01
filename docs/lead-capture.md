@@ -72,3 +72,19 @@ the popup form's "Tell us about your project ?" field, whose query key is
 
 Popup timing lives in `AUTO_DELAY_MS` (25000). Set it higher, lower, or remove the
 `setTimeout`/`mouseout` block to make the popup CTA-only again.
+
+### If the popup seems not to appear
+
+The automatic popup fires **once per browser session**, recorded as
+`bf_quote_seen` in `sessionStorage`. Once it has fired in a tab it will not fire
+again there, which looks exactly like it has stopped working. To test it again,
+open the page in a new tab or a private window, or run
+`sessionStorage.removeItem('bf_quote_seen')` in the console and reload.
+
+The CTA buttons and the hero form are **not** subject to that limit — they open
+the popup every time.
+
+If the popup opens but the form area is blank, the embed is being blocked
+(privacy extension, strict tracking protection, or a network that blocks
+`leadconnectorhq.com`). The modal shows an "Open it in a new tab" link for
+exactly that case.

@@ -128,7 +128,7 @@
     align-items:center;justify-content:center;}
   .modal-close:hover{background:var(--cream-2);}
   .modal-embed-wrap{position:relative;min-height:560px;}
-  .modal-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  .modal-loading{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;
     font-size:.88rem;color:var(--muted);background:var(--paper);border-radius:10px;}
   .modal-embed-wrap.is-loaded .modal-loading{display:none;}
   body.modal-open{overflow:hidden;}
@@ -772,7 +772,9 @@
     <h3 id="quote-modal-title">Get Your Free Fire Feature Quote</h3>
     <p class="modal-sub">Tell us about your pool or patio and our team will follow up with sizing, options and pricing.</p>
     <div class="modal-embed-wrap" id="quote-embed-wrap">
-      <div class="modal-loading">Loading the form&hellip;</div>
+      <div class="modal-loading">Loading the form&hellip;<br>
+        <a href="https://api.leadconnectorhq.com/widget/form/iD7GLxxCdv51i6umUCJF" target="_blank" rel="noopener"
+           style="color:var(--orange-dark);font-weight:600;">Open it in a new tab &rarr;</a></div>
       <iframe class="lead-embed" id="quote-modal-embed"
       data-src="https://api.leadconnectorhq.com/widget/form/iD7GLxxCdv51i6umUCJF"
       data-layout="{'id':'INLINE'}"
@@ -1262,6 +1264,14 @@
       if (wrap) wrap.classList.add('is-loaded');
     });
 
+    // Warm the embed shortly after load so the popup opens with the form
+    // already there rather than starting a cold fetch on click.
+    function warm(){
+      if (!frame.getAttribute('src')) { frame.setAttribute('src', frame.getAttribute('data-src')); }
+    }
+    if (window.requestIdleCallback) { requestIdleCallback(warm, { timeout: 4000 }); }
+    else { setTimeout(warm, 2500); }
+
     Array.prototype.forEach.call(document.querySelectorAll('[data-quote-modal]'), function(el){
       el.addEventListener('click', openModal);
     });
@@ -1276,11 +1286,6 @@
       seen = true;
       try { sessionStorage.setItem('bf_quote_seen', '1'); } catch (err) {}
     }
-
-    modal.addEventListener('click', markSeen);
-    Array.prototype.forEach.call(document.querySelectorAll('[data-quote-modal]'), function(el){
-      el.addEventListener('click', markSeen);
-    });
 
     function autoOpen(){
       if (seen || modal.classList.contains('is-open')) return;
