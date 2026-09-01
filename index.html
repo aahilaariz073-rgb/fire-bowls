@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fire Bowls &amp; Fire and Water Features | Pool Fire Bowls — Orange County, CA</title>
 <meta name="description" content="Shop modern outdoor fire bowls, pool fire bowls and fire and water features at BellaFina Outdoors, serving Huntington Beach, Newport Beach, Irvine, Laguna Beach, Dana Point and all of Orange County. Copper, stainless and GFRC bowls, scuppers and complete fire feature systems for homeowners and pool professionals.">
-<link rel="preload" as="image" href="assets/hero-slide-1.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/hero-fire-bowl.webp" fetchpriority="high">
 <link rel="canonical" href="https://fire-bowls.vercel.app/">
 <meta property="og:title" content="Fire Bowls &amp; Fire and Water Features | BellaFina Outdoors">
 <meta property="og:description" content="Pool fire bowls, fire and water bowls, and decorative outdoor fire features — designed, supplied and supported across Orange County.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fire-bowls.vercel.app/">
-<meta property="og:image" content="https://fire-bowls.vercel.app/assets/hero-slide-1.webp">
+<meta property="og:image" content="https://fire-bowls.vercel.app/assets/hero-fire-bowl.webp">
 <meta property="og:site_name" content="BellaFina Outdoors">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pool Fire Bowls &amp; Fire and Water Features — Orange County">
 <meta name="twitter:description" content="Modern outdoor fire bowls, pool fire bowls and fire and water features in copper, stainless and GFRC. Huntington Beach showroom, serving all of Orange County.">
-<meta name="twitter:image" content="https://fire-bowls.vercel.app/assets/hero-slide-1.webp">
+<meta name="twitter:image" content="https://fire-bowls.vercel.app/assets/hero-fire-bowl.webp">
 <style>
   :root{
     --navy:#152238;
@@ -66,25 +66,10 @@
   @media (max-width:900px){ nav.links{display:none;} }
 
   /* Hero */
-  .hero{position:relative;padding:150px 24px 130px;text-align:center;overflow:hidden;background:#0a101a;}
-
-  /* Hero slideshow: four slides, 3s each, crossfading on a 12s loop */
-  .hero-slides{position:absolute;inset:0;z-index:0;}
-  .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center 60%;
-    opacity:0;animation:heroSlide 9s linear infinite;}
-  .hero-slide:nth-child(1){background-image:url("assets/hero-slide-1.webp");animation-delay:0s;}
-  .hero-slide:nth-child(2){background-image:url("assets/hero-slide-2.webp");animation-delay:3s;}
-  .hero-slide:nth-child(3){background-image:url("assets/hero-slide-3.webp");animation-delay:6s;}
-  @keyframes heroSlide{
-    0%{opacity:0;}
-    5.5%{opacity:1;}
-    33.3%{opacity:1;}
-    38.8%{opacity:0;}
-    100%{opacity:0;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .hero-slide{animation:none;opacity:0;}
-    .hero-slide:nth-child(1){opacity:1;}
+  .hero{position:relative;padding:150px 24px 130px;text-align:center;overflow:hidden;
+    background:#0a101a url("assets/hero-fire-bowl.webp");
+    background-size:cover;
+    background-position:center 60%;
   }
   .hero::before{content:"";position:absolute;inset:0;z-index:1;background:
     linear-gradient(100deg, rgba(10,16,26,.72) 0%, rgba(10,16,26,.5) 32%, rgba(10,16,26,.12) 58%, transparent 72%);
@@ -296,11 +281,6 @@
 </header>
 
 <section class="hero" id="top">
-  <div class="hero-slides" aria-hidden="true">
-    <div class="hero-slide"></div>
-    <div class="hero-slide"></div>
-    <div class="hero-slide"></div>
-  </div>
   <div class="hero-ring"></div>
   <div class="hero-grid">
     <div class="hero-inner">
