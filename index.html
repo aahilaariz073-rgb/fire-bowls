@@ -103,6 +103,16 @@
   .lead-card select:focus{outline:2px solid var(--gold);outline-offset:1px;}
   .lead-card .btn{width:100%;justify-content:center;margin-top:6px;}
   .lead-note{font-size:.74rem;color:var(--muted);text-align:center;margin-top:14px;}
+  .lead-status{display:none;text-align:center;padding:26px 4px 10px;}
+  .lead-status.is-visible{display:block;}
+  .lead-status .tick{width:46px;height:46px;border-radius:50%;background:var(--navy);color:var(--gold-light);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.3rem;}
+  .lead-status h4{font-family:var(--serif);font-weight:400;font-size:1.25rem;color:var(--navy);margin:0 0 8px;}
+  .lead-status p{font-size:.9rem;color:var(--muted);margin:0;}
+  .lead-error{display:none;font-size:.82rem;color:#a3341c;background:#fdeee9;border:1px solid #f3c9bd;
+    border-radius:8px;padding:10px 12px;margin-bottom:14px;}
+  .lead-error.is-visible{display:block;}
+  .lead-card.is-sent .lead-fields{display:none;}
   .lead-embed{width:100%;min-height:560px;border:none;border-radius:10px;display:block;background:#fff;}
 
   /* Quote modal */
@@ -320,32 +330,40 @@
       <h3>Design Your Fire Feature</h3>
       <p class="lead-sub">Send us your pool plan or a photo of the space. We'll come back with bowl sizes, quantities and pricing — usually within one business day.</p>
 
-      <div class="lead-field">
-        <label for="lead-name">Full Name</label>
-        <input id="lead-name" type="text" name="name" placeholder="Jane Smith" required>
-      </div>
-      <div class="lead-field">
-        <label for="lead-phone">Phone Number</label>
-        <input id="lead-phone" type="tel" name="phone" placeholder="(714) 000-0000" required>
-      </div>
-      <div class="lead-field">
-        <label for="lead-email">Email</label>
-        <input id="lead-email" type="email" name="email" placeholder="you@email.com" required>
-      </div>
-      <div class="lead-field">
-        <label for="lead-interest">I'm Interested In</label>
-        <select id="lead-interest" name="interest">
-          <option>Pool Fire Bowls</option>
-          <option>Fire &amp; Water Bowls</option>
-          <option>Freestanding Fire Bowls</option>
-          <option>Fire Tables &amp; Fire Pits</option>
-          <option>Water Features &amp; Scuppers</option>
-          <option>Trade / Pool Professional Pricing</option>
-        </select>
-      </div>
+      <div class="lead-error" id="lead-error" role="alert"></div>
+      <div class="lead-fields">
+        <div class="lead-field">
+          <label for="lead-name">Full Name</label>
+          <input id="lead-name" type="text" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="lead-field">
+          <label for="lead-phone">Phone Number</label>
+          <input id="lead-phone" type="tel" name="phone" placeholder="(714) 000-0000" required>
+        </div>
+        <div class="lead-field">
+          <label for="lead-email">Email</label>
+          <input id="lead-email" type="email" name="email" placeholder="you@email.com" required>
+        </div>
+        <div class="lead-field">
+          <label for="lead-interest">I'm Interested In</label>
+          <select id="lead-interest" name="interest">
+            <option>Pool Fire Bowls</option>
+            <option>Fire &amp; Water Bowls</option>
+            <option>Freestanding Fire Bowls</option>
+            <option>Fire Tables &amp; Fire Pits</option>
+            <option>Water Features &amp; Scuppers</option>
+            <option>Trade / Pool Professional Pricing</option>
+          </select>
+        </div>
 
-      <button type="submit" class="btn btn-primary">Request My Free Quote <span class="btn-arrow">&rarr;</span></button>
-      <p class="lead-note">No obligation. We typically respond within 1 business day.</p>
+        <button type="submit" class="btn btn-primary">Request My Free Quote <span class="btn-arrow">&rarr;</span></button>
+        <p class="lead-note">No obligation. We typically respond within 1 business day.</p>
+      </div>
+      <div class="lead-status" id="lead-status" role="status" aria-live="polite">
+        <div class="tick">&#10003;</div>
+        <h4>Thanks — we've got it</h4>
+        <p>Our team will follow up with sizing, options and pricing, usually within one business day.</p>
+      </div>
     </form>
   </div>
 </section>
@@ -1121,29 +1139,94 @@
     }
   })();
 
-  // The hero form is a styled front end for the same LeadConnector form:
-  // submitting it opens the popup with the entered details prefilled.
+  // Hero form posts straight to a GoHighLevel inbound webhook, independent of
+  // the popup. Paste the workflow's webhook URL here to switch it on; while it
+  // is empty the form falls back to opening the popup so no lead is lost.
+  var LEAD_WEBHOOK_URL = '';
+
   (function(){
     var form = document.getElementById('lead-form');
     if (!form) return;
+    var card = form;
+    var errorBox = document.getElementById('lead-error');
+    var status = document.getElementById('lead-status');
+    var button = form.querySelector('button[type="submit"]');
+
+    function campaignParams(){
+      var out = {};
+      try {
+        new URLSearchParams(window.location.search).forEach(function(v, k){
+          if (/^utm_/i.test(k) || /^(gclid|fbclid|msclkid)$/i.test(k)) out[k] = v;
+        });
+      } catch (err) {}
+      return out;
+    }
+
+    function payload(){
+      var name = (document.getElementById('lead-name').value || '').trim();
+      var space = name.indexOf(' ');
+      var data = {
+        first_name: space > -1 ? name.slice(0, space) : name,
+        last_name:  space > -1 ? name.slice(space + 1) : '',
+        full_name: name,
+        phone: (document.getElementById('lead-phone').value || '').trim(),
+        email: (document.getElementById('lead-email').value || '').trim(),
+        interest: document.getElementById('lead-interest').value || '',
+        source: 'Fire bowls landing page — hero form',
+        page_url: window.location.href
+      };
+      var utm = campaignParams();
+      Object.keys(utm).forEach(function(k){ data[k] = utm[k]; });
+      return data;
+    }
+
+    function showSent(){
+      card.classList.add('is-sent');
+      if (status) status.classList.add('is-visible');
+    }
+
+    function showError(msg){
+      if (!errorBox) return;
+      errorBox.textContent = msg;
+      errorBox.classList.add('is-visible');
+    }
 
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      var name = (document.getElementById('lead-name').value || '').trim();
-      var space = name.indexOf(' ');
-      var fields = {
-        first_name: space > -1 ? name.slice(0, space) : name,
-        last_name:  space > -1 ? name.slice(space + 1) : '',
-        phone: document.getElementById('lead-phone').value || '',
-        email: document.getElementById('lead-email').value || '',
-        // "Tell us about your project ?" on the LeadConnector form
-        single_line_11kyi: document.getElementById('lead-interest').value || ''
-      };
-      var parts = [];
-      Object.keys(fields).forEach(function(k){
-        if (fields[k]) parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(fields[k]));
+
+      // Not configured yet: hand off to the popup rather than drop the lead.
+      if (!LEAD_WEBHOOK_URL) {
+        if (window.openQuoteModal) window.openQuoteModal(null);
+        return;
+      }
+
+      if (errorBox) errorBox.classList.remove('is-visible');
+      if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+
+      var body = JSON.stringify(payload());
+
+      fetch(LEAD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body
+      }).then(function(res){
+        if (!res.ok) throw new Error('status ' + res.status);
+        showSent();
+      }).catch(function(){
+        // Some webhook endpoints reject the CORS preflight. Retry opaquely so
+        // the lead still lands, then treat it as sent.
+        fetch(LEAD_WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: body
+        }).then(function(){
+          showSent();
+        }).catch(function(){
+          if (button) { button.disabled = false; button.innerHTML = 'Request My Free Quote <span class="btn-arrow">&rarr;</span>'; }
+          showError('Sorry — that did not send. Please call (714) 699-9269 or email info@bellafinaoutdoors.com.');
+        });
       });
-      if (window.openQuoteModal) window.openQuoteModal(null, parts.join('&'));
     });
   })();
 
@@ -1155,16 +1238,10 @@
     if (!modal || !frame) return;
     var lastFocus = null;
 
-    var currentPrefill = '';
-
-    function openModal(e, prefill){
+    function openModal(e){
       if (e && e.preventDefault) e.preventDefault();
       lastFocus = document.activeElement;
-      if (prefill) { currentPrefill = prefill; }
-      var src = frame.getAttribute('data-src');
-      if (currentPrefill) { src += (src.indexOf('?') > -1 ? '&' : '?') + currentPrefill; }
-      // Reload only when the prefill changes, so reopening keeps what was typed.
-      if (frame.getAttribute('src') !== src) { frame.setAttribute('src', src); }
+      if (!frame.getAttribute('src')) { frame.setAttribute('src', frame.getAttribute('data-src')); }
       modal.hidden = false;
       modal.classList.add('is-open');
       document.body.classList.add('modal-open');
