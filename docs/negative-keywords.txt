@@ -1,0 +1,64 @@
+# Shared negative keyword list — Fire Bowls campaigns
+# Add as a shared list applied to all four campaigns.
+
+## Wrong product (wood / portable / decor)
+wood burning
+wood fire pit
+firewood
+chiminea
+smokeless
+solo stove
+portable
+tabletop
+camping
+propane tank only
+fire pit table cover
+fire glass only
+tiki
+citronella
+
+## Wrong intent (DIY / free / used / info-only)
+diy
+how to build
+homemade
+plans
+free
+used
+craigslist
+facebook marketplace
+cheap
+clearance
+rental
+rent
+repair
+replacement parts only
+manual
+instructions
+youtube
+
+## Wrong vertical
+fire pit restaurant
+fire bowl restaurant
+fire bowl recipe
+poke
+bowl recipe
+hibachi
+fire pit ring for camping
+gender reveal
+fire dancing
+fire bowl game
+
+## Wrong geography (add as campaign negatives if not geo-fenced tightly)
+texas
+florida
+arizona
+las vegas
+canada
+uk
+australia
+
+## Jobs / careers
+jobs
+hiring
+salary
+career
