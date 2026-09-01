@@ -103,9 +103,7 @@
   .lead-card select:focus{outline:2px solid var(--gold);outline-offset:1px;}
   .lead-card .btn{width:100%;justify-content:center;margin-top:6px;}
   .lead-note{font-size:.74rem;color:var(--muted);text-align:center;margin-top:14px;}
-  .lead-embed{width:100%;min-height:520px;border:none;border-radius:10px;display:block;background:#fff;}
-  .lead-card .lead-embed-wrap{position:relative;}
-  .lead-embed-fallback{font-size:.85rem;color:var(--muted);text-align:center;padding:18px 0;}
+  .lead-embed{width:100%;min-height:560px;border:none;border-radius:10px;display:block;background:#fff;}
 
   /* Quote modal */
   .modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;}
@@ -314,30 +312,37 @@
       </div>
     </div>
 
-    <div class="lead-card">
+    <form class="lead-card" id="lead-form">
       <h3>Design Your Fire Feature</h3>
       <p class="lead-sub">Send us your pool plan or a photo of the space. We'll come back with bowl sizes, quantities and pricing — usually within one business day.</p>
-      <div class="lead-embed-wrap">
-        <iframe class="lead-embed"
-          src="https://api.leadconnectorhq.com/widget/form/iD7GLxxCdv51i6umUCJF"
-          id="inline-iD7GLxxCdv51i6umUCJF"
-          data-layout="{'id':'INLINE'}"
-          data-trigger-type="alwaysShow"
-          data-trigger-value=""
-          data-activation-type="alwaysActivated"
-          data-activation-value=""
-          data-deactivation-type="neverDeactivate"
-          data-deactivation-value=""
-          data-form-name="Funnels Form"
-          data-height="967"
-          data-layout-iframe-id="inline-iD7GLxxCdv51i6umUCJF"
-          data-form-id="iD7GLxxCdv51i6umUCJF"
-          data-cookie-consent="true"
-          data-cookie-consent-provider="auto"
-          title="Request a fire feature quote"></iframe>
+
+      <div class="lead-field">
+        <label for="lead-name">Full Name</label>
+        <input id="lead-name" type="text" name="name" placeholder="Jane Smith" required>
       </div>
+      <div class="lead-field">
+        <label for="lead-phone">Phone Number</label>
+        <input id="lead-phone" type="tel" name="phone" placeholder="(714) 000-0000" required>
+      </div>
+      <div class="lead-field">
+        <label for="lead-email">Email</label>
+        <input id="lead-email" type="email" name="email" placeholder="you@email.com" required>
+      </div>
+      <div class="lead-field">
+        <label for="lead-interest">I'm Interested In</label>
+        <select id="lead-interest" name="interest">
+          <option>Pool Fire Bowls</option>
+          <option>Fire &amp; Water Bowls</option>
+          <option>Freestanding Fire Bowls</option>
+          <option>Fire Tables &amp; Fire Pits</option>
+          <option>Water Features &amp; Scuppers</option>
+          <option>Trade / Pool Professional Pricing</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Request My Free Quote <span class="btn-arrow">&rarr;</span></button>
       <p class="lead-note">No obligation. We typically respond within 1 business day.</p>
-    </div>
+    </form>
   </div>
 </section>
 
@@ -1100,14 +1105,6 @@
     if (!keep.length) return;
     var extra = keep.join('&');
 
-    var hero = document.getElementById('inline-iD7GLxxCdv51i6umUCJF');
-    if (hero) {
-      var src = hero.getAttribute('src');
-      if (src && src.indexOf('utm_') === -1) {
-        hero.setAttribute('src', src + (src.indexOf('?') > -1 ? '&' : '?') + extra);
-      }
-    }
-
     var modalFrame = document.getElementById('quote-modal-embed');
     if (modalFrame) {
       var dsrc = modalFrame.getAttribute('data-src');
@@ -1115,6 +1112,31 @@
         modalFrame.setAttribute('data-src', dsrc + (dsrc.indexOf('?') > -1 ? '&' : '?') + extra);
       }
     }
+  })();
+
+  // The hero form is a styled front end for the same LeadConnector form:
+  // submitting it opens the popup with the entered details prefilled.
+  (function(){
+    var form = document.getElementById('lead-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = (document.getElementById('lead-name').value || '').trim();
+      var space = name.indexOf(' ');
+      var fields = {
+        first_name: space > -1 ? name.slice(0, space) : name,
+        last_name:  space > -1 ? name.slice(space + 1) : '',
+        phone: document.getElementById('lead-phone').value || '',
+        email: document.getElementById('lead-email').value || '',
+        interest: document.getElementById('lead-interest').value || ''
+      };
+      var parts = [];
+      Object.keys(fields).forEach(function(k){
+        if (fields[k]) parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(fields[k]));
+      });
+      if (window.openQuoteModal) window.openQuoteModal(null, parts.join('&'));
+    });
   })();
 
   // Quote modal. Its iframe loads the first time the modal opens, so the page
@@ -1125,16 +1147,23 @@
     if (!modal || !frame) return;
     var lastFocus = null;
 
-    function openModal(e){
-      if (e) e.preventDefault();
+    var currentPrefill = '';
+
+    function openModal(e, prefill){
+      if (e && e.preventDefault) e.preventDefault();
       lastFocus = document.activeElement;
-      if (!frame.getAttribute('src')) { frame.setAttribute('src', frame.getAttribute('data-src')); }
+      if (prefill) { currentPrefill = prefill; }
+      var src = frame.getAttribute('data-src');
+      if (currentPrefill) { src += (src.indexOf('?') > -1 ? '&' : '?') + currentPrefill; }
+      // Reload only when the prefill changes, so reopening keeps what was typed.
+      if (frame.getAttribute('src') !== src) { frame.setAttribute('src', src); }
       modal.hidden = false;
       modal.classList.add('is-open');
       document.body.classList.add('modal-open');
       var close = modal.querySelector('.modal-close');
       if (close) close.focus();
     }
+    window.openQuoteModal = openModal;
 
     function closeModal(){
       modal.classList.remove('is-open');
