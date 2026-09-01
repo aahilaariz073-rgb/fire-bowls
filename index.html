@@ -1145,6 +1145,7 @@
   // the popup. Paste the workflow's webhook URL here to switch it on; while it
   // is empty the form falls back to opening the popup so no lead is lost.
   var LEAD_WEBHOOK_URL = '';
+  var HOSTED_FORM_URL = 'https://api.leadconnectorhq.com/widget/form/iD7GLxxCdv51i6umUCJF';
 
   (function(){
     var form = document.getElementById('lead-form');
@@ -1196,9 +1197,24 @@
     form.addEventListener('submit', function(e){
       e.preventDefault();
 
-      // Not configured yet: hand off to the popup rather than drop the lead.
+      // Until the webhook URL is set, send the lead to the hosted version of
+      // the same GoHighLevel form in a new tab, prefilled. Never the popup.
       if (!LEAD_WEBHOOK_URL) {
-        if (window.openQuoteModal) window.openQuoteModal(null);
+        var d = payload();
+        var q = [
+          'first_name=' + encodeURIComponent(d.first_name),
+          'last_name=' + encodeURIComponent(d.last_name),
+          'phone=' + encodeURIComponent(d.phone),
+          'email=' + encodeURIComponent(d.email),
+          'single_line_11kyi=' + encodeURIComponent(d.interest)
+        ].join('&');
+        window.open(HOSTED_FORM_URL + '?' + q, '_blank', 'noopener');
+        // Not captured yet — say so rather than claiming we have the lead.
+        if (status) {
+          status.querySelector('h4').textContent = 'One more step';
+          status.querySelector('p').textContent = "We've opened the quote form in a new tab with your details filled in. Send it there and we'll be in touch within one business day.";
+        }
+        showSent();
         return;
       }
 
@@ -1276,9 +1292,9 @@
       el.addEventListener('click', openModal);
     });
 
-    // Show the popup on its own once per visit: after 25s, or when a desktop
-    // visitor moves to leave. Skipped if they have already opened it.
-    var AUTO_DELAY_MS = 25000;
+    // Show the popup on its own once per visit: 5s after load, or when a
+    // desktop visitor moves to leave.
+    var AUTO_DELAY_MS = 5000;
     var seen = false;
     try { seen = sessionStorage.getItem('bf_quote_seen') === '1'; } catch (err) {}
 

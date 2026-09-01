@@ -27,8 +27,11 @@ The page has **two independent lead paths**. Neither depends on the other.
    fields (GHL will show them once a test payload has been received).
 5. Publish the workflow.
 
-**Until that URL is filled in**, the hero form falls back to opening the popup, so
-no lead is lost in the meantime. Once it is set, the two forms are fully separate.
+**Until that URL is filled in**, the hero form opens the hosted version of the same
+GoHighLevel form in a new tab, prefilled with what the visitor typed, and the card
+says "One more step" rather than claiming the lead was captured. It never opens the
+popup. Once the webhook URL is set, the hero form posts silently and confirms with
+"Thanks — we've got it", and the two paths share nothing at all.
 
 ## What the hero form sends
 
@@ -70,7 +73,7 @@ natively — nothing to configure. The interest dropdown on the hero form maps t
 the popup form's "Tell us about your project ?" field, whose query key is
 `single_line_11kyi` (read from the form's own `data-q` attribute).
 
-Popup timing lives in `AUTO_DELAY_MS` (25000). Set it higher, lower, or remove the
+Popup timing lives in `AUTO_DELAY_MS` (5000 — five seconds after load). Set it higher, lower, or remove the
 `setTimeout`/`mouseout` block to make the popup CTA-only again.
 
 ### If the popup seems not to appear
