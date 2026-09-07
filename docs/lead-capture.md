@@ -44,7 +44,7 @@ popup. Once the webhook URL is set, the hero form posts silently and confirms wi
   "email": "jane@example.com",
   "interest": "Trade / Pool Professional Pricing",
   "source": "Fire bowls landing page — hero form",
-  "page_url": "https://fire-bowls.vercel.app/?utm_source=google&...",
+  "page_url": "https://firebowls.bellafinaoutdoors.com/?utm_source=google&...",
   "utm_source": "google",
   "utm_campaign": "fire_bowls",
   "gclid": "XYZ99"

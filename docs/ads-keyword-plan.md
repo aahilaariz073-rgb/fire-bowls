@@ -1,5 +1,5 @@
 # Fire Bowls & Fire/Water Features — Keyword & Paid Search Plan
-**BellaFina Outdoors · Orange County, CA · landing page: `https://fire-bowls.vercel.app/`**
+**BellaFina Outdoors · Orange County, CA · landing page: `https://firebowls.bellafinaoutdoors.com/`**
 
 ---
 

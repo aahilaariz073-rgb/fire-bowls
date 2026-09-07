@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pizzaovens.bellafinaoutdoors.com/sitemap.xml
