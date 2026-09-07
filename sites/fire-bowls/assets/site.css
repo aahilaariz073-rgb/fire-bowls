@@ -275,7 +275,9 @@
   @media (max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;}}
 
   /* ---------------------------------------------------------------
-     Multi-page additions
+     Per-site additions
+     Each site is standalone: its nav is on-page anchors only, and it
+     never links to the other sites.
      --------------------------------------------------------------- */
 
   /* Category pages have no photography of their own yet, so their heroes
@@ -292,19 +294,6 @@
   .hero:not(.hero-photo)::before{
     background:linear-gradient(100deg, rgba(10,16,26,.55) 0%, rgba(10,16,26,.28) 38%, transparent 70%);}
   .hero:not(.hero-photo)::after{display:none;}
-
-  /* Cross-page nav: mark the current page in the header. */
-  nav.links a[aria-current="page"]{color:var(--orange);font-weight:600;}
-
-  /* Sibling-page cards at the foot of every category page. */
-  .siblings{padding:80px 24px;background:var(--cream);}
-  .siblings .head{max-width:760px;margin:0 auto 40px;text-align:center;}
-  .sib-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;}
-  .sib-card{background:#fff;border:1px solid #e6ddc9;border-radius:16px;padding:26px;transition:transform .18s ease,box-shadow .18s ease;}
-  .sib-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px -22px rgba(21,34,56,.5);}
-  .sib-card h3{font-size:1.15rem;margin-bottom:8px;}
-  .sib-card p{font-size:.92rem;color:var(--muted);margin:0 0 14px;}
-  .sib-card .link{color:var(--orange-dark);font-weight:600;font-size:.9rem;}
 
   /* Wider service-area block for the three-county pages. */
   .area-grid.area-grid-wide{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
