@@ -13,7 +13,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-SITES=(fire-bowls fire-pits outdoor-kitchens pizza-ovens)
+SITES=(fire-bowls)
 FILES=(site.css site.js brand/logo.webp brand/favicon-32.png brand/icon-512.png brand/apple-touch-icon.png)
 
 check=0
