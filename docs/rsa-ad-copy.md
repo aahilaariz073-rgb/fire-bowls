@@ -1,6 +1,6 @@
 # Responsive Search Ad copy — Fire Bowls landing page
 
-Final URL for every ad: `https://fire-bowls.vercel.app/`
+Final URL for every ad: `https://firebowls.bellafinaoutdoors.com/`
 Final URL suffix (paste once at account level):
 `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={adgroupid}&utm_term={keyword}`
 

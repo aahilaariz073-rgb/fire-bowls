@@ -46,8 +46,16 @@
   @media (max-width:900px){ nav.links{display:none;} }
 
   /* Hero */
+  /* Base hero is a flat dark ground. A site with its own hero photograph adds
+     .hero-photo and points --hero-image at the file in its own assets/ dir;
+     without that no image is requested at all. Use a root-relative path there
+     (/assets/...) — a relative url() inside a custom property resolves against
+     this stylesheet, not the page. */
   .hero{position:relative;padding:150px 24px 130px;text-align:center;overflow:hidden;
-    background:#0a101a url("hero-fire-bowl.webp");
+    background:#0a101a;
+  }
+  .hero-photo{
+    background-image:var(--hero-image);
     background-size:cover;
     background-position:center 60%;
   }
@@ -278,12 +286,12 @@
   .hero-kitchen{background:radial-gradient(95% 95% at 85% -10%,#43608a 0%,#283d5f 32%,#17253d 66%,#0b1220 100%);}
   .hero-oven{background:radial-gradient(85% 95% at 78% 10%,#c9631b 0%,#8a4a1a 26%,#38261a 62%,#0d1522 100%);}
 
-  /* The photo scrim is there to keep white type legible over an image. The
-     gradient heroes are already dark on the type side, so it only muddies
-     them — lighten it and drop the bottom fade. */
-  .hero-plain::before,.hero-fire::before,.hero-kitchen::before,.hero-oven::before{
+  /* The heavy scrim exists to keep white type legible over a photograph. On a
+     gradient hero it only muddies the colour, so soften it and drop the
+     bottom fade unless the hero actually carries an image. */
+  .hero:not(.hero-photo)::before{
     background:linear-gradient(100deg, rgba(10,16,26,.55) 0%, rgba(10,16,26,.28) 38%, transparent 70%);}
-  .hero-plain::after,.hero-fire::after,.hero-kitchen::after,.hero-oven::after{display:none;}
+  .hero:not(.hero-photo)::after{display:none;}
 
   /* Cross-page nav: mark the current page in the header. */
   nav.links a[aria-current="page"]{color:var(--orange);font-weight:600;}
