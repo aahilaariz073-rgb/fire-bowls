@@ -11,10 +11,15 @@ bellafinaoutdoors.com.
 | `sites/outdoor-kitchens` | `outdoorkitchens.bellafinaoutdoors.com` | Outdoor kitchens & built-in BBQs |
 | `sites/pizza-ovens` | `pizzaovens.bellafinaoutdoors.com` | Outdoor pizza ovens |
 
-The pages are deliberately kept distinct so they don't compete with each other:
-the fire bowl site owns the pool-adjacent terms, the fire pit site owns the
-standalone patio terms, and the kitchen and pizza oven sites cross-link because a
-built-in oven is both its own purchase and a kitchen component.
+The sites are **fully independent of one another**. None of them links to any of
+the others: each header nav is on-page anchors only, and every outbound link goes
+to bellafinaoutdoors.com. A visitor who lands on one stays on it or moves to the
+main site — which keeps each one a clean, single-purpose landing page for its own
+ad campaign.
+
+They are also kept distinct in content so they don't compete in search: the fire
+bowl site owns the pool-adjacent terms and the fire pit site owns the standalone
+patio terms.
 
 ## One repo, four Vercel projects
 
@@ -93,10 +98,13 @@ Anything unique to a site lives in its `index.html`:
 - a `utm_campaign` value: `fire_bowls`, `fire_pits`, `outdoor_kitchens` or
   `pizza_ovens`
 
-Cross-links between the four sites are absolute URLs, in the header nav, the
-footer "Our Pages" list and the sibling cards above the final CTA. **Adding or
-renaming a site means updating those three places in all four `index.html`
-files, plus this README.**
+The header nav is on-page anchors only, pointing at that site's own sections
+(`#top`, `#types`, one signature split section, `#who`, `#areas`, `#faq`). Adding
+a nav item means adding an `id` to the section it targets.
+
+**Do not add links between the sites.** They are deliberately isolated; adding
+one back means editing every page and re-checking that each site's outbound links
+still all go to bellafinaoutdoors.com.
 
 ## Photography
 
