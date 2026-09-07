@@ -176,7 +176,7 @@
   .cat-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px -14px rgba(21,34,56,.16);}
   .cat-card .icon{width:44px;height:44px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
   .cat-card .icon svg{width:22px;height:22px;color:var(--gold-light);}
-  .cat-card h3{font-size:1.08rem;margin-bottom:8px;color:var(--navy);}
+  .cat-card h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;line-height:1.3;letter-spacing:0;margin-bottom:10px;color:var(--navy);}
   .cat-card p{font-size:.88rem;color:var(--muted);margin:0 0 14px;}
   .cat-card .link{font-size:.82rem;font-weight:700;color:var(--orange-dark);}
   @media (max-width:1000px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
