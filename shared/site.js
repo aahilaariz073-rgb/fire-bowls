@@ -1,32 +1,6 @@
-/* Shared behaviour for every page: lazy split-section video, ad-attribution
-   passthrough, the hero lead form and the quote popup. Each page decides
-   which of these exist; every block no-ops when its markup is absent. */
-
-  // The two loops are ~5MB each, so they are not fetched until they are
-  // near the viewport, and they pause again once scrolled well past.
-  (function(){
-    var vids = ['split-loop-video', 'split-loop-video-2']
-      .map(function(id){ return document.getElementById(id); })
-      .filter(Boolean);
-    if (!vids.length) return;
-
-    function play(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
-
-    if (!('IntersectionObserver' in window)) {
-      vids.forEach(function(v){ v.preload = 'auto'; play(v); });
-      return;
-    }
-
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        var v = e.target;
-        if (e.isIntersecting) { v.preload = 'auto'; play(v); }
-        else if (!v.paused) { v.pause(); }
-      });
-    }, { rootMargin: '200px 0px' });
-
-    vids.forEach(function(v){ io.observe(v); });
-  })();
+/* Shared behaviour for every page: ad-attribution passthrough, the hero lead
+   form and the quote popup. Each page decides which of these exist; every
+   block no-ops when its markup is absent. */
 
   // Pass ad attribution through to the CRM: any utm_*/gclid/fbclid on the page
   // URL is appended to the form embeds, so the lead record shows its source.
@@ -235,23 +209,3 @@
     });
   })();
 
-  /* Section videos: honour reduced-motion, and only play while on screen so a
-     visitor never streams both clips at once. */
-  (function(){
-    var vids = document.querySelectorAll('.visual-video video');
-    if (!vids.length) return;
-    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (still) {
-      Array.prototype.forEach.call(vids, function(v){ v.removeAttribute('autoplay'); v.pause(); });
-      return;
-    }
-    if (!('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        var v = e.target;
-        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
-        else if (!v.paused) { v.pause(); }
-      });
-    }, { threshold: 0.25 });
-    Array.prototype.forEach.call(vids, function(v){ io.observe(v); });
-  })();

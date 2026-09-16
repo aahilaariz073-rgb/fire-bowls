@@ -239,16 +239,9 @@
   .visual svg{width:40%;height:40%;opacity:.9;}
   .visual-fire{background:linear-gradient(160deg,var(--orange-light),var(--orange) 60%,var(--orange-dark));}
   .visual-water{background:linear-gradient(160deg,var(--blue),var(--navy) 65%);}
-  /* Portrait clips (9:16) get their own frame rather than being cropped into
-     the 4:3 slot: the .visual is a plain block here, and the video inside
-     carries the aspect ratio and a capped width so it stays centred. */
-  .visual-video{background:none;aspect-ratio:auto;display:block;overflow:visible;}
-  .visual-video video{display:block;width:100%;max-width:380px;margin:0 auto;
-    aspect-ratio:9/16;object-fit:cover;border-radius:18px;background:#0e1929;
-    box-shadow:0 18px 44px rgba(11,18,32,.22);}
-  .visual-video figcaption{margin:14px auto 0;max-width:380px;text-align:center;
-    color:var(--muted);font-size:.9rem;line-height:1.5;}
-  @media (max-width:860px){ .visual-video video,.visual-video figcaption{max-width:320px;} }
+  /* Section photos fill the 4:3 slot edge to edge. */
+  .visual-photo{background:#0e1929;box-shadow:0 18px 44px rgba(11,18,32,.22);}
+  .visual-photo img{display:block;width:100%;height:100%;object-fit:cover;}
   @media (max-width:860px){ .split .wrap{grid-template-columns:1fr;} .split.reverse .wrap{direction:ltr;} }
 
   /* Categories */
