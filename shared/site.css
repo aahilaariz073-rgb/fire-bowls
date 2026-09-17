@@ -88,7 +88,7 @@
   .hero-inner{max-width:660px;}
   .lead-card{justify-self:end;width:100%;max-width:440px;}
   .hero .eyebrow{color:var(--gold-light);font-size:.8rem;}
-  .hero h1{color:#fff;font-family:var(--serif);font-weight:400;font-size:clamp(2rem,3.6vw,2.9rem);margin-top:16px;text-shadow:0 2px 30px rgba(0,0,0,.25);}
+  .hero h1{color:#fff;font-family:var(--serif);font-weight:600;font-size:clamp(2.3rem,4.2vw,3.4rem);line-height:1.12;letter-spacing:-.005em;margin-top:16px;text-shadow:0 2px 30px rgba(0,0,0,.25);}
   .hero p.sub{color:#dfe3ec;font-size:1.22rem;max-width:580px;margin:0 0 34px;}
   .hero .cta-row{display:flex;gap:16px;justify-content:flex-start;flex-wrap:wrap;}
 
