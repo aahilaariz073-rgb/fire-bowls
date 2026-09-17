@@ -56,8 +56,8 @@
      for the shop and accent for the quote. Short labels are what let the nav
      carry seven items without the buttons wrapping over them. */
   .header-ctas{display:flex;gap:10px;align-items:center;}
-  .header-ctas .btn{padding:11px 20px;font-size:.78rem;letter-spacing:.06em;
-    text-transform:uppercase;font-weight:700;white-space:nowrap;}
+  .header-ctas .btn{padding:14px 26px;font-size:.78rem;letter-spacing:.08em;
+    border-radius:8px;text-transform:uppercase;font-weight:700;white-space:nowrap;}
   .header-ctas .btn-primary{background:var(--orange);}
   .header-ctas .btn-ghost{background:var(--navy);color:#fff;}
   .header-ctas .btn-ghost:hover{background:var(--navy-2);}
