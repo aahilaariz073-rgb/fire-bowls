@@ -169,7 +169,7 @@
      same slot and capped on both axes, which keeps a wide wordmark and a round
      badge reading at the same optical weight. */
   .brand-logos{list-style:none;margin:0;padding:0;display:grid;
-    grid-template-columns:repeat(4,1fr);gap:30px 36px;align-items:center;}
+    grid-template-columns:repeat(3,1fr);gap:30px 36px;align-items:center;}
   .brand-logos li{display:flex;align-items:center;justify-content:center;height:52px;}
   .brand-logos img{max-height:100%;max-width:160px;width:auto;object-fit:contain;
     filter:grayscale(1) contrast(1.15);opacity:.8;transition:filter .2s ease,opacity .2s ease;}
