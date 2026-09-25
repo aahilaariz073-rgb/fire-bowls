@@ -209,7 +209,7 @@
   .trade .btn-outline:hover{background:var(--navy);color:#fff;}
 
   /* Step cards carry their own link into the next stage of the journey. */
-  .step-card .link{display:inline-block;margin-top:14px;font-size:.82rem;font-weight:700;
+  .step-card .link{display:inline-block;margin-top:auto;padding-top:14px;align-self:flex-start;font-size:.82rem;font-weight:700;
     letter-spacing:.03em;text-transform:uppercase;color:var(--orange-dark);}
 
   /* Lede / intro prose */
@@ -226,7 +226,7 @@
   .process h2{color:#fff;font-size:clamp(1.8rem,3.6vw,2.6rem);max-width:780px;margin:0 auto 50px;text-align:center;}
   .process .eyebrow{text-align:center;display:block;margin-bottom:10px;}
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1180px;margin:0 auto;}
-  .step-card{background:var(--cream-2);color:var(--ink);border-radius:14px;padding:34px 28px;}
+  .step-card{background:var(--cream-2);color:var(--ink);border-radius:14px;padding:34px 28px;display:flex;flex-direction:column;}
   .step-card .num{font-family:var(--serif);font-size:2.4rem;color:var(--orange-dark);display:block;margin-bottom:10px;}
   .step-card h3{font-size:1.25rem;margin-bottom:10px;}
   .step-card p{font-size:.94rem;color:var(--muted);margin:0;}
@@ -261,13 +261,13 @@
   .head-note{margin-top:18px;padding:14px 20px;border-left:3px solid var(--gold-light);
     background:rgba(216,181,126,.09);border-radius:0 10px 10px 0;text-align:left;font-size:.98rem;}
   .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;max-width:1180px;margin:0 auto;}
-  .cat-card{background:#fff;border-radius:16px;padding:32px 24px;text-align:left;border:1px solid var(--blue-pale);box-shadow:0 1px 3px rgba(21,34,56,.04);transition:transform .18s ease, box-shadow .18s ease;}
+  .cat-card{background:#fff;border-radius:16px;padding:32px 24px;text-align:left;border:1px solid var(--blue-pale);box-shadow:0 1px 3px rgba(21,34,56,.04);transition:transform .18s ease, box-shadow .18s ease;display:flex;flex-direction:column;}
   .cat-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px -14px rgba(21,34,56,.16);}
   .cat-card .icon{width:44px;height:44px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
   .cat-card .icon svg{width:22px;height:22px;color:var(--gold-light);}
   .cat-card h3{font-size:1.08rem;margin-bottom:8px;color:var(--navy);}
   .cat-card p{font-size:.88rem;color:var(--muted);margin:0 0 14px;}
-  .cat-card .link{font-size:.82rem;font-weight:700;color:var(--orange-dark);}
+  .cat-card .link{font-size:.82rem;font-weight:700;color:var(--orange-dark);margin-top:auto;}
   @media (max-width:1000px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
   @media (max-width:560px){.cat-grid{grid-template-columns:1fr;}}
 
